@@ -57,7 +57,7 @@ function gtranslate_block($op = 'list', $delta = 0) {
                 $block_content .= '<script type="text/javascript" src="'.base_path().'/sites/all/modules/gtranslate/gtranslate-files/jquery-translate.js"></script>';
                 $block_content .= '<script type="text/javascript">'."\n";
                 $block_content .= "//<![CDATA[\n";
-                $block_content .= "if(jQuery.cookie('glang') && jQuery.cookie('glang') != '".variable_get('gtranslate_main_lang', 'en')."') jQuery(function(\$){\$('body').translate('".variable_get('gtranslate_main_lang', 'en')."', \$.cookie('glang'), {not:'script'});});\n";
+                $block_content .= "if(jQuery.cookie('glang') && jQuery.cookie('glang') != '".variable_get('gtranslate_main_lang', 'en')."') jQuery(function(\$){\$('body').translate('".variable_get('gtranslate_main_lang', 'en')."', \$.cookie('glang'), {not:'script', toggle:true});});\n";
                 $block_content .= "//]]>\n";
                 $block_content .= '</script>';
             }
@@ -66,7 +66,7 @@ function gtranslate_block($op = 'list', $delta = 0) {
             $block_content .= "//<![CDATA[\n";
 
             if(variable_get('gtranslate_method', 'google-default') == 'on-fly') {
-                $block_content .= "function doTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;var lang=lang_pair.split('|')[1];if(lang=='pt')lang='pt-PT';jQuery.cookie('glang', lang);jQuery(function(\$){\$('body').translate('".variable_get('gtranslate_main_lang', 'en')."', lang, {not:'script'})});}";
+                $block_content .= "function doTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;var lang=lang_pair.split('|')[1];if(lang=='pt')lang='pt-PT';jQuery.cookie('glang', lang);jQuery(function(\$){\$('body').translate('".variable_get('gtranslate_main_lang', 'en')."', lang, {not:'script', toggle:true})});}";
             } else {
                 if(variable_get('gtranslate_new_window', 0)) {
                     $block_content .= "function openTab(url) {var form=document.createElement('form');form.method='post';form.action=url;form.target='_blank';document.body.appendChild(form);form.submit();}";
