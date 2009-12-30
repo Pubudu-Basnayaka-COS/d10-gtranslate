@@ -54,7 +54,7 @@ function gtranslate_block($op = 'list', $delta = 0) {
         } else {
 
             if(variable_get('gtranslate_method', 'google-default') == 'on-fly') {
-                $block_content .= '<script type="text/javascript" src="'.base_path().'/sites/all/modules/gtranslate/gtranslate-files/jquery-translate.js"></script>';
+                $block_content .= '<script type="text/javascript" src="'.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/jquery-translate.js"></script>';
                 $block_content .= '<script type="text/javascript">'."\n";
                 $block_content .= "//<![CDATA[\n";
                 $block_content .= "if(jQuery.cookie('glang') && jQuery.cookie('glang') != '".variable_get('gtranslate_main_lang', 'en')."') jQuery(function(\$){\$('body').translate('".variable_get('gtranslate_main_lang', 'en')."', \$.cookie('glang'), {not:'script', toggle:true});});\n";
@@ -97,8 +97,8 @@ function gtranslate_block($op = 'list', $delta = 0) {
                 case 'both': {
                     $block_content .= '<style type="text/css">'."\n";
                     $block_content .= "<!--\n";
-                    $block_content .= "a.flag {background-image:url('".base_path()."/sites/all/modules/gtranslate/gtranslate-files/".variable_get('gtranslate_flag_size', '16')."a.png');}\n";
-                    $block_content .= "a.flag:hover {background-image:url('".base_path()."/sites/all/modules/gtranslate/gtranslate-files/".variable_get('gtranslate_flag_size', '16').".png');}\n";
+                    $block_content .= "a.flag {background-image:url('".base_path().drupal_get_path('module', 'gtranslate')."/gtranslate-files/".variable_get('gtranslate_flag_size', '16')."a.png');}\n";
+                    $block_content .= "a.flag:hover {background-image:url('".base_path().drupal_get_path('module', 'gtranslate')."/gtranslate-files/".variable_get('gtranslate_flag_size', '16').".png');}\n";
                     $block_content .= "-->\n";
                     $block_content .= '</style>';
 
@@ -111,7 +111,7 @@ function gtranslate_block($op = 'list', $delta = 0) {
                                 default: break;
                             }
 
-                            $block_content .= '<a href="javascript:doTranslate(\''.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'\')" title="'.$lang_name.'" class="flag" style="font-size:'.variable_get('gtranslate_flag_size', '16').'px;padding:1px 0;background-repeat:no-repeat;background-position:-'.($i*100).'px -'.($j*100).'px;"><img src="'.base_path().'/sites/all/modules/gtranslate/gtranslate-files/blank.png" height="'.variable_get('gtranslate_flag_size', '16').'" width="'.variable_get('gtranslate_flag_size', '16').'" style="border:0;vertical-align:top;" alt="'.$lang_name.'" /></a> ';
+                            $block_content .= '<a href="javascript:doTranslate(\''.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'\')" title="'.$lang_name.'" class="flag" style="font-size:'.variable_get('gtranslate_flag_size', '16').'px;padding:1px 0;background-repeat:no-repeat;background-position:-'.($i*100).'px -'.($j*100).'px;"><img src="'.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/blank.png" height="'.variable_get('gtranslate_flag_size', '16').'" width="'.variable_get('gtranslate_flag_size', '16').'" style="border:0;vertical-align:top;" alt="'.$lang_name.'" /></a> ';
                         }
 
                         if($i == 7) {
@@ -134,7 +134,7 @@ function gtranslate_block($op = 'list', $delta = 0) {
                                 default: break;
                             }
 
-                            $block_content .= '<option value="'.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'" style="'.($lang == variable_get('gtranslate_main_lang', 'en') ? 'font-weight:bold;' : '').'background:url(\''.base_path().'/sites/all/modules/gtranslate/gtranslate-files/16l.png\') no-repeat scroll 0 -'.($i*16).'px;padding-left:18px;">'.$lang_name.'</option>';
+                            $block_content .= '<option value="'.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'" style="'.($lang == variable_get('gtranslate_main_lang', 'en') ? 'font-weight:bold;' : '').'background:url(\''.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/16l.png\') no-repeat scroll 0 -'.($i*16).'px;padding-left:18px;">'.$lang_name.'</option>';
                         }
 
                         $i++;
@@ -146,8 +146,8 @@ function gtranslate_block($op = 'list', $delta = 0) {
                 case 'flags': {
                     $block_content .= '<style type="text/css">'."\n";
                     $block_content .= "<!--\n";
-                    $block_content .= "a.flag {background-image:url('".base_path()."/sites/all/modules/gtranslate/gtranslate-files/".variable_get('gtranslate_flag_size', '16')."a.png');}\n";
-                    $block_content .= "a.flag:hover {background-image:url('".base_path()."/sites/all/modules/gtranslate/gtranslate-files/".variable_get('gtranslate_flag_size', '16').".png');}\n";
+                    $block_content .= "a.flag {background-image:url('".base_path().drupal_get_path('module', 'gtranslate')."/gtranslate-files/".variable_get('gtranslate_flag_size', '16')."a.png');}\n";
+                    $block_content .= "a.flag:hover {background-image:url('".base_path().drupal_get_path('module', 'gtranslate')."/gtranslate-files/".variable_get('gtranslate_flag_size', '16').".png');}\n";
                     $block_content .= "-->\n";
                     $block_content .= '</style>';
 
@@ -160,7 +160,7 @@ function gtranslate_block($op = 'list', $delta = 0) {
                                 default: break;
                             }
 
-                            $block_content .= '<a href="javascript:doTranslate(\''.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'\')" title="'.$lang_name.'" class="flag" style="font-size:'.variable_get('gtranslate_flag_size', '16').'px;padding:1px 0;background-repeat:no-repeat;background-position:-'.($i*100).'px -'.($j*100).'px;"><img src="'.base_path().'/sites/all/modules/gtranslate/gtranslate-files/blank.png" height="'.variable_get('gtranslate_flag_size', '16').'" width="'.variable_get('gtranslate_flag_size', '16').'" style="border:0;vertical-align:top;" alt="'.$lang_name.'" /></a> ';
+                            $block_content .= '<a href="javascript:doTranslate(\''.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'\')" title="'.$lang_name.'" class="flag" style="font-size:'.variable_get('gtranslate_flag_size', '16').'px;padding:1px 0;background-repeat:no-repeat;background-position:-'.($i*100).'px -'.($j*100).'px;"><img src="'.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/blank.png" height="'.variable_get('gtranslate_flag_size', '16').'" width="'.variable_get('gtranslate_flag_size', '16').'" style="border:0;vertical-align:top;" alt="'.$lang_name.'" /></a> ';
                         }
 
                         if($i == 7) {
@@ -185,7 +185,7 @@ function gtranslate_block($op = 'list', $delta = 0) {
                                 default: break;
                             }
 
-                            $block_content .= '<option value="'.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'" style="'.($lang == variable_get('gtranslate_main_lang', 'en') ? 'font-weight:bold;' : '').'background:url(\''.base_path().'/sites/all/modules/gtranslate/gtranslate-files/16l.png\') no-repeat scroll 0 -'.($i*16).'px;padding-left:18px;">'.$lang_name.'</option>';
+                            $block_content .= '<option value="'.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'" style="'.($lang == variable_get('gtranslate_main_lang', 'en') ? 'font-weight:bold;' : '').'background:url(\''.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/16l.png\') no-repeat scroll 0 -'.($i*16).'px;padding-left:18px;">'.$lang_name.'</option>';
                         }
 
                         $i++;
