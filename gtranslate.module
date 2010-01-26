@@ -97,8 +97,8 @@ function gtranslate_block($op = 'list', $delta = 0) {
                 case 'both': {
                     $block_content .= '<style type="text/css">'."\n";
                     $block_content .= "<!--\n";
-                    $block_content .= "a.flag {background-image:url('".base_path().drupal_get_path('module', 'gtranslate')."/gtranslate-files/".variable_get('gtranslate_flag_size', '16')."a.png');}\n";
-                    $block_content .= "a.flag:hover {background-image:url('".base_path().drupal_get_path('module', 'gtranslate')."/gtranslate-files/".variable_get('gtranslate_flag_size', '16').".png');}\n";
+                    $block_content .= "a.gtflag {background-image:url('".base_path().drupal_get_path('module', 'gtranslate')."/gtranslate-files/".variable_get('gtranslate_flag_size', '16')."a.png');}\n";
+                    $block_content .= "a.gtflag:hover {background-image:url('".base_path().drupal_get_path('module', 'gtranslate')."/gtranslate-files/".variable_get('gtranslate_flag_size', '16').".png');}\n";
                     $block_content .= "-->\n";
                     $block_content .= '</style>';
 
@@ -111,7 +111,7 @@ function gtranslate_block($op = 'list', $delta = 0) {
                                 default: break;
                             }
 
-                            $block_content .= '<a href="javascript:doTranslate(\''.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'\')" title="'.$lang_name.'" class="flag" style="font-size:'.variable_get('gtranslate_flag_size', '16').'px;padding:1px 0;background-repeat:no-repeat;background-position:-'.($i*100).'px -'.($j*100).'px;"><img src="'.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/blank.png" height="'.variable_get('gtranslate_flag_size', '16').'" width="'.variable_get('gtranslate_flag_size', '16').'" style="border:0;vertical-align:top;" alt="'.$lang_name.'" /></a> ';
+                            $block_content .= '<a href="javascript:doTranslate(\''.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'\')" title="'.$lang_name.'" class="gtflag" style="font-size:'.variable_get('gtranslate_flag_size', '16').'px;padding:1px 0;background-repeat:no-repeat;background-position:-'.($i*100).'px -'.($j*100).'px;"><img src="'.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/blank.png" height="'.variable_get('gtranslate_flag_size', '16').'" width="'.variable_get('gtranslate_flag_size', '16').'" style="border:0;vertical-align:top;" alt="'.$lang_name.'" /></a> ';
                         }
 
                         if($i == 7) {
@@ -146,8 +146,8 @@ function gtranslate_block($op = 'list', $delta = 0) {
                 case 'flags': {
                     $block_content .= '<style type="text/css">'."\n";
                     $block_content .= "<!--\n";
-                    $block_content .= "a.flag {background-image:url('".base_path().drupal_get_path('module', 'gtranslate')."/gtranslate-files/".variable_get('gtranslate_flag_size', '16')."a.png');}\n";
-                    $block_content .= "a.flag:hover {background-image:url('".base_path().drupal_get_path('module', 'gtranslate')."/gtranslate-files/".variable_get('gtranslate_flag_size', '16').".png');}\n";
+                    $block_content .= "a.gtflag {background-image:url('".base_path().drupal_get_path('module', 'gtranslate')."/gtranslate-files/".variable_get('gtranslate_flag_size', '16')."a.png');}\n";
+                    $block_content .= "a.gtflag:hover {background-image:url('".base_path().drupal_get_path('module', 'gtranslate')."/gtranslate-files/".variable_get('gtranslate_flag_size', '16').".png');}\n";
                     $block_content .= "-->\n";
                     $block_content .= '</style>';
 
@@ -160,7 +160,7 @@ function gtranslate_block($op = 'list', $delta = 0) {
                                 default: break;
                             }
 
-                            $block_content .= '<a href="javascript:doTranslate(\''.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'\')" title="'.$lang_name.'" class="flag" style="font-size:'.variable_get('gtranslate_flag_size', '16').'px;padding:1px 0;background-repeat:no-repeat;background-position:-'.($i*100).'px -'.($j*100).'px;"><img src="'.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/blank.png" height="'.variable_get('gtranslate_flag_size', '16').'" width="'.variable_get('gtranslate_flag_size', '16').'" style="border:0;vertical-align:top;" alt="'.$lang_name.'" /></a> ';
+                            $block_content .= '<a href="javascript:doTranslate(\''.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'\')" title="'.$lang_name.'" class="gtflag" style="font-size:'.variable_get('gtranslate_flag_size', '16').'px;padding:1px 0;background-repeat:no-repeat;background-position:-'.($i*100).'px -'.($j*100).'px;"><img src="'.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/blank.png" height="'.variable_get('gtranslate_flag_size', '16').'" width="'.variable_get('gtranslate_flag_size', '16').'" style="border:0;vertical-align:top;" alt="'.$lang_name.'" /></a> ';
                         }
 
                         if($i == 7) {
@@ -284,7 +284,7 @@ function gtranslate_admin() {
         $form['language']["gtranslate_$lang"] = array(
             '#type' => 'radios',
             '#title' => t("Show $language"),
-            '#default_value' => in_array($lang, $languages_flags) ? 2 : 1,
+            '#default_value' => variable_get("gtranslate_$lang", in_array($lang, $languages_flags) ? 2 : 1),
             '#options' => array(1=>'Yes', 0=>'No', 2=>'As a flag'),
             '#description' => t("Show $language in the language list"),
             '#required' => TRUE
