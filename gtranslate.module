@@ -24,7 +24,30 @@ function gtranslate_block($op = 'list', $delta = 0) {
         return $block;
     } elseif ($op == 'view') {
         $block_content = '';
-        $languages = array('en'=>'English','ar'=>'Arabic','bg'=>'Bulgarian','zhCN'=>'Chinese (Simplified)','zhTW'=>'Chinese (Traditional)','hr'=>'Croatian','cs'=>'Czech','da'=>'Danish','nl'=>'Dutch','fi'=>'Finnish','fr'=>'French','de'=>'German','el'=>'Greek','hi'=>'Hindi','it'=>'Italian','ja'=>'Japanese','ko'=>'Korean','no'=>'Norwegian','pl'=>'Polish','pt'=>'Portuguese','ro'=>'Romanian','ru'=>'Russian','es'=>'Spanish','sv'=>'Swedish','ca'=>'Catalan','tl'=>'Filipino','iw'=>'Hebrew','id'=>'Indonesian','lv'=>'Latvian','lt'=>'Lithuanian','sr'=>'Serbian','sk'=>'Slovak','sl'=>'Slovenian','uk'=>'Ukrainian','vi'=>'Vietnamese','sq'=>'Albanian','et'=>'Estonian','gl'=>'Galician','hu'=>'Hungarian','mt'=>'Maltese','th'=>'Thai','tr'=>'Turkish','fa'=>'Persian','af'=>'Afrikaans','ms'=>'Malay','sw'=>'Swahili','ga'=>'Irish','cy'=>'Welsh','be'=>'Belarusian','is'=>'Icelandic','mk'=>'Macedonian','yi'=>'Yiddish');
+        $languages = array('en'=>'English','ar'=>'Arabic','bg'=>'Bulgarian','zhCN'=>'Chinese (Simplified)','zhTW'=>'Chinese (Traditional)','hr'=>'Croatian','cs'=>'Czech','da'=>'Danish','nl'=>'Dutch','fi'=>'Finnish','fr'=>'French','de'=>'German','el'=>'Greek','hi'=>'Hindi','it'=>'Italian','ja'=>'Japanese','ko'=>'Korean','no'=>'Norwegian','pl'=>'Polish','pt'=>'Portuguese','ro'=>'Romanian','ru'=>'Russian','es'=>'Spanish','sv'=>'Swedish','ca'=>'Catalan','tl'=>'Filipino','iw'=>'Hebrew','id'=>'Indonesian','lv'=>'Latvian','lt'=>'Lithuanian','sr'=>'Serbian','sk'=>'Slovak','sl'=>'Slovenian','uk'=>'Ukrainian','vi'=>'Vietnamese','sq'=>'Albanian','et'=>'Estonian','gl'=>'Galician','hu'=>'Hungarian','mt'=>'Maltese','th'=>'Thai','tr'=>'Turkish','fa'=>'Persian','af'=>'Afrikaans','ms'=>'Malay','sw'=>'Swahili','ga'=>'Irish','cy'=>'Welsh','be'=>'Belarusian','is'=>'Icelandic','mk'=>'Macedonian','yi'=>'Yiddish','hy'=>'Armenian','az'=>'Azerbaijani','eu'=>'Basque','ka'=>'Georgian','ht'=>'Haitian Creole','ur'=>'Urdu');
+
+        $flag_map = array();
+        $i = $j = 0;
+        foreach($languages as $lang => $lang_name) {
+            $flag_map[$lang] = array($i*100, $j*100);
+            if($i == 7) {
+                $i = 0;
+                $j++;
+            } else {
+                $i++;
+            }
+        }
+
+        $flag_map_vertical = array();
+        $i = 0;
+        foreach($languages as $lang => $lang_name) {
+            $flag_map_vertical[$lang] = $i*16;
+            $i++;
+        }
+
+        // Move the default language to the first position and sort
+        asort($languages);
+        $languages = array_merge(array(variable_get('gtranslate_main_lang', 'en') => $languages[variable_get('gtranslate_main_lang', 'en')]), $languages);
 
         if(variable_get('gtranslate_method', 'google-default') == 'google-default') {
 
@@ -57,7 +80,7 @@ function gtranslate_block($op = 'list', $delta = 0) {
                 $block_content .= '<script type="text/javascript" src="'.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/jquery-translate.js"></script>';
                 $block_content .= '<script type="text/javascript">'."\n";
                 $block_content .= "//<![CDATA[\n";
-                $block_content .= "if(jQuery.cookie('glang') && jQuery.cookie('glang') != '".variable_get('gtranslate_main_lang', 'en')."') jQuery(function(\$){\$('body').translate('".variable_get('gtranslate_main_lang', 'en')."', \$.cookie('glang'), {not:'script', toggle:true});});\n";
+                $block_content .= "if(jQuery.cookie('glang') && jQuery.cookie('glang') != '".variable_get('gtranslate_main_lang', 'en')."') jQuery(function(\$){\$('body').translate('".variable_get('gtranslate_main_lang', 'en')."', \$.cookie('glang'), {not:'.notranslate', toggle:true});});\n";
                 $block_content .= "//]]>\n";
                 $block_content .= '</script>';
             }
@@ -66,7 +89,7 @@ function gtranslate_block($op = 'list', $delta = 0) {
             $block_content .= "//<![CDATA[\n";
 
             if(variable_get('gtranslate_method', 'google-default') == 'on-fly') {
-                $block_content .= "function doTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;var lang=lang_pair.split('|')[1];if(lang=='pt')lang='pt-PT';jQuery.cookie('glang', lang);jQuery(function(\$){\$('body').translate('".variable_get('gtranslate_main_lang', 'en')."', lang, {not:'script', toggle:true})});}";
+                $block_content .= "function doTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;var lang=lang_pair.split('|')[1];if(lang=='pt')lang='pt-PT';jQuery.cookie('glang', lang);jQuery(function(\$){\$('body').translate('".variable_get('gtranslate_main_lang', 'en')."', lang, {not:'.notranslate', toggle:true})});}";
             } else {
                 if(variable_get('gtranslate_new_window', 0)) {
                     $block_content .= "function openTab(url) {var form=document.createElement('form');form.method='post';form.action=url;form.target='_blank';document.body.appendChild(form);form.submit();}";
@@ -105,13 +128,14 @@ function gtranslate_block($op = 'list', $delta = 0) {
                     $i = $j = 0;
                     foreach($languages as $lang => $lang_name) {
                         if(variable_get("gtranslate_$lang", 0) == 2) {
+                            list($flag_x, $flag_y) = $flag_map[$lang];
                             switch($lang) {
                                 case 'zhCN': $lang = 'zh-CN'; break;
                                 case 'zhTW': $lang = 'zh-TW'; break;
                                 default: break;
                             }
 
-                            $block_content .= '<a href="javascript:doTranslate(\''.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'\')" title="'.$lang_name.'" class="gtflag" style="font-size:'.variable_get('gtranslate_flag_size', '16').'px;padding:1px 0;background-repeat:no-repeat;background-position:-'.($i*100).'px -'.($j*100).'px;"><img src="'.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/blank.png" height="'.variable_get('gtranslate_flag_size', '16').'" width="'.variable_get('gtranslate_flag_size', '16').'" style="border:0;vertical-align:top;" alt="'.$lang_name.'" /></a> ';
+                            $block_content .= '<a href="javascript:doTranslate(\''.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'\')" title="'.$lang_name.'" class="gtflag" style="font-size:'.variable_get('gtranslate_flag_size', '16').'px;padding:1px 0;background-repeat:no-repeat;background-position:-'.$flag_x.'px -'.$flag_y.'px;"><img src="'.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/blank.png" height="'.variable_get('gtranslate_flag_size', '16').'" width="'.variable_get('gtranslate_flag_size', '16').'" style="border:0;vertical-align:top;" alt="'.$lang_name.'" /></a> ';
                         }
 
                         if($i == 7) {
@@ -128,13 +152,14 @@ function gtranslate_block($op = 'list', $delta = 0) {
                     $i = 0;
                     foreach($languages as $lang => $lang_name) {
                         if(variable_get("gtranslate_$lang", 0)) {
+                            $flag_y = $flag_map_vertical[$lang];
                             switch($lang) {
                                 case 'zhCN': $lang = 'zh-CN'; break;
                                 case 'zhTW': $lang = 'zh-TW'; break;
                                 default: break;
                             }
 
-                            $block_content .= '<option value="'.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'" style="'.($lang == variable_get('gtranslate_main_lang', 'en') ? 'font-weight:bold;' : '').'background:url(\''.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/16l.png\') no-repeat scroll 0 -'.($i*16).'px;padding-left:18px;">'.$lang_name.'</option>';
+                            $block_content .= '<option value="'.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'" style="'.($lang == variable_get('gtranslate_main_lang', 'en') ? 'font-weight:bold;' : '').'background:url(\''.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/16l.png\') no-repeat scroll 0 -'.$flag_y.'px;padding-left:18px;">'.$lang_name.'</option>';
                         }
 
                         $i++;
@@ -154,13 +179,15 @@ function gtranslate_block($op = 'list', $delta = 0) {
                     $i = $j = 0;
                     foreach($languages as $lang => $lang_name) {
                         if(variable_get("gtranslate_$lang", 0)) {
+                            list($flag_x, $flag_y) = $flag_map[$lang];
+
                             switch($lang) {
                                 case 'zhCN': $lang = 'zh-CN'; break;
                                 case 'zhTW': $lang = 'zh-TW'; break;
                                 default: break;
                             }
 
-                            $block_content .= '<a href="javascript:doTranslate(\''.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'\')" title="'.$lang_name.'" class="gtflag" style="font-size:'.variable_get('gtranslate_flag_size', '16').'px;padding:1px 0;background-repeat:no-repeat;background-position:-'.($i*100).'px -'.($j*100).'px;"><img src="'.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/blank.png" height="'.variable_get('gtranslate_flag_size', '16').'" width="'.variable_get('gtranslate_flag_size', '16').'" style="border:0;vertical-align:top;" alt="'.$lang_name.'" /></a> ';
+                            $block_content .= '<a href="javascript:doTranslate(\''.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'\')" title="'.$lang_name.'" class="gtflag" style="font-size:'.variable_get('gtranslate_flag_size', '16').'px;padding:1px 0;background-repeat:no-repeat;background-position:-'.$flag_x.'px -'.$flag_y.'px;"><img src="'.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/blank.png" height="'.variable_get('gtranslate_flag_size', '16').'" width="'.variable_get('gtranslate_flag_size', '16').'" style="border:0;vertical-align:top;" alt="'.$lang_name.'" /></a> ';
                         }
 
                         if($i == 7) {
@@ -178,6 +205,8 @@ function gtranslate_block($op = 'list', $delta = 0) {
 
                     $i = 0;
                     foreach($languages as $lang => $lang_name) {
+                        $flag_y = $flag_map_vertical[$lang];
+
                         if(variable_get("gtranslate_$lang", 0)) {
                             switch($lang) {
                                 case 'zhCN': $lang = 'zh-CN'; break;
@@ -185,7 +214,7 @@ function gtranslate_block($op = 'list', $delta = 0) {
                                 default: break;
                             }
 
-                            $block_content .= '<option value="'.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'" style="'.($lang == variable_get('gtranslate_main_lang', 'en') ? 'font-weight:bold;' : '').'background:url(\''.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/16l.png\') no-repeat scroll 0 -'.($i*16).'px;padding-left:18px;">'.$lang_name.'</option>';
+                            $block_content .= '<option value="'.variable_get('gtranslate_main_lang', 'en').'|'.$lang.'" style="'.($lang == variable_get('gtranslate_main_lang', 'en') ? 'font-weight:bold;' : '').'background:url(\''.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/16l.png\') no-repeat scroll 0 -'.$flag_y.'px;padding-left:18px;">'.$lang_name.'</option>';
                         }
 
                         $i++;
@@ -204,7 +233,11 @@ function gtranslate_block($op = 'list', $delta = 0) {
 } // function gtranslate_block
 
 function gtranslate_admin() {
-    $languages = array('en'=>'English','ar'=>'Arabic','bg'=>'Bulgarian','zhCN'=>'Chinese (Simplified)','zhTW'=>'Chinese (Traditional)','hr'=>'Croatian','cs'=>'Czech','da'=>'Danish','nl'=>'Dutch','fi'=>'Finnish','fr'=>'French','de'=>'German','el'=>'Greek','hi'=>'Hindi','it'=>'Italian','ja'=>'Japanese','ko'=>'Korean','no'=>'Norwegian','pl'=>'Polish','pt'=>'Portuguese','ro'=>'Romanian','ru'=>'Russian','es'=>'Spanish','sv'=>'Swedish','ca'=>'Catalan','tl'=>'Filipino','iw'=>'Hebrew','id'=>'Indonesian','lv'=>'Latvian','lt'=>'Lithuanian','sr'=>'Serbian','sk'=>'Slovak','sl'=>'Slovenian','uk'=>'Ukrainian','vi'=>'Vietnamese','sq'=>'Albanian','et'=>'Estonian','gl'=>'Galician','hu'=>'Hungarian','mt'=>'Maltese','th'=>'Thai','tr'=>'Turkish','fa'=>'Persian','af'=>'Afrikaans','ms'=>'Malay','sw'=>'Swahili','ga'=>'Irish','cy'=>'Welsh','be'=>'Belarusian','is'=>'Icelandic','mk'=>'Macedonian','yi'=>'Yiddish');
+    $languages = array('en'=>'English','ar'=>'Arabic','bg'=>'Bulgarian','zhCN'=>'Chinese (Simplified)','zhTW'=>'Chinese (Traditional)','hr'=>'Croatian','cs'=>'Czech','da'=>'Danish','nl'=>'Dutch','fi'=>'Finnish','fr'=>'French','de'=>'German','el'=>'Greek','hi'=>'Hindi','it'=>'Italian','ja'=>'Japanese','ko'=>'Korean','no'=>'Norwegian','pl'=>'Polish','pt'=>'Portuguese','ro'=>'Romanian','ru'=>'Russian','es'=>'Spanish','sv'=>'Swedish','ca'=>'Catalan','tl'=>'Filipino','iw'=>'Hebrew','id'=>'Indonesian','lv'=>'Latvian','lt'=>'Lithuanian','sr'=>'Serbian','sk'=>'Slovak','sl'=>'Slovenian','uk'=>'Ukrainian','vi'=>'Vietnamese','sq'=>'Albanian','et'=>'Estonian','gl'=>'Galician','hu'=>'Hungarian','mt'=>'Maltese','th'=>'Thai','tr'=>'Turkish','fa'=>'Persian','af'=>'Afrikaans','ms'=>'Malay','sw'=>'Swahili','ga'=>'Irish','cy'=>'Welsh','be'=>'Belarusian','is'=>'Icelandic','mk'=>'Macedonian','yi'=>'Yiddish','hy'=>'Armenian','az'=>'Azerbaijani','eu'=>'Basque','ka'=>'Georgian','ht'=>'Haitian Creole','ur'=>'Urdu');
+
+    // Move the default language to the first position and sort
+    asort($languages);
+    $languages = array_merge(array(variable_get('gtranslate_main_lang', 'en') => $languages[variable_get('gtranslate_main_lang', 'en')]), $languages);
 
     $form['general'] = array(
         '#type' => 'fieldset',

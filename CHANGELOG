@@ -5,3 +5,6 @@ Completely new module with new features for Drupal 6.x
 
 30 Dec. 2010:
 Fixed path for flags: base_path() . drupal_get_path('module', 'gtranslate')
+
+13 Jul. 2010:
+Updated module to have the same functionality as Joomla 1.5.x.20 version
