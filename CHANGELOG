@@ -12,5 +12,6 @@ Updated module to have the same functionality as Joomla 1.5.x.20 version
 03 Dec. 2010
 Fixed cookie path. Added analytics feature.
 
-06 Jur. 2011
+06 Jul. 2011
 Updated jQuery Translate library to v1.4.7
+Port for D7
