@@ -6,7 +6,7 @@ function gtranslate_help($path, $arg) {
 
     switch($path) {
         case 'admin/help#gtranslate':
-            $output = '<p>' . t("Uses Google power to translate your web site. Author Edvard Ananyan http://edo.webmaster.am") . '</p>';
+            $output = '<p>' . t("Uses Google power to translate your web site. Author Edvard Ananyan http://edo.webmaster.am/gtranslate") . '</p>';
             break;
     }
 
@@ -76,6 +76,7 @@ function gtranslate_block($op = 'list', $delta = 0) {
         } else {
 
             if(variable_get('gtranslate_method', 'google-default') == 'on-fly') {
+                drupal_add_js('misc/jquery.js', 'core', 'header');
                 $block_content .= '<script type="text/javascript" src="'.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/jquery-translate.js"></script>';
                 $block_content .= '<script type="text/javascript">'."\n";
                 $block_content .= "//<![CDATA[\n";
@@ -273,7 +274,7 @@ function gtranslate_admin() {
         '#type' => 'checkbox',
         '#title' => t('Operate with Pro version'),
         '#default_value' => variable_get('gtranslate_pro', 0),
-        '#description' => t("If you have Pro version installed you need to check this box. Find out more on <a href=http://edo.webmaster.am/gtranslate target=_blank>http://edo.webmaster.am/gtranslate</a>"),
+        '#description' => t("If you have Pro version installed you need to check this box. Find out more on <a href=http://edo.webmaster.am/gtranslate?xyz=1002 target=_blank>http://edo.webmaster.am/gtranslate</a>"),
     );
 
     $form['general']['gtranslate_analytics'] = array(
