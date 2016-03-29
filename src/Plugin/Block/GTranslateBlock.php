@@ -370,7 +370,7 @@ EOT;
 		                $href = ($gtranslate_main_lang == $lang) ? \Drupal::request()->getRequestUri() : \Drupal::request()->getScheme() . '://' . $lang . '.' . str_replace('www.', '', \Drupal::request()->getHost() . \Drupal::request()->getRequestUri());
 
 			        if($settings->get('gtranslate_'.$lang) == '2')
-			        	$block_content .= '<a href="'.$href.'" onclick="doGTranslate(\''.$gtranslate_main_lang.'|'.$lang.'\');jQuery(this).parent().parent().find(\'div.selected a\').html(jQuery(this).html());return false;" title="'.$lang_name.'" class="nturl '.($current_language == $lang ? ' selected' : '').'"><span class="gflag" style="background-position:-'.$flag_x.'px -'.$flag_y.'px;"><img src="'.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/blank.png" height="16" width="16" alt="'.$lang_name.'" /></span>'.$lang_name.'</a>';
+			        	$block_content .= '<a href="'.$href.'" title="'.$lang_name.'" class="nturl '.($current_language == $lang ? ' selected' : '').'"><span class="gflag" style="background-position:-'.$flag_x.'px -'.$flag_y.'px;"><img src="'.base_path().drupal_get_path('module', 'gtranslate').'/gtranslate-files/blank.png" height="16" width="16" alt="'.$lang_name.'" /></span>'.$lang_name.'</a>';
 			    }
 
 			    $block_content .= '</div></div>';
