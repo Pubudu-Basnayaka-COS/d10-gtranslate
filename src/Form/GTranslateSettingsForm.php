@@ -34,7 +34,7 @@ class GTranslateSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-	$config = $this->config('gtranslate.settings');
+    $config = $this->config('gtranslate.settings');
 
     $form['general'] = array(
       '#type' => 'details',
@@ -44,59 +44,59 @@ class GTranslateSettingsForm extends ConfigFormBase {
 
     $form['general']['gtranslate_look'] = array(
         '#type' => 'select',
-        '#title' => t('Look'),
+        '#title' => $this->t('Look'),
         '#default_value' => $config->get('gtranslate_look'),
         '#size' => 1,
         '#options' => array('flags_dropdown' => 'Flags and dropdown', 'flags' => 'Flags', 'dropdown'=> 'Dropdown', 'dropdown_with_flags' => 'Nice dropdown with flags'),
-        '#description' => t("Select the look of the module"),
+        '#description' => $this->t("Select the look of the module"),
         '#required' => TRUE
     );
 
     $form['general']['gtranslate_main_lang'] = array(
         '#type' => 'select',
-        '#title' => t('Main Language'),
+        '#title' => $this->t('Main Language'),
         '#default_value' => $config->get('gtranslate_main_lang'),
         '#size' => 1,
         '#options' => $this->languages,
-        '#description' => t("Your sites main language"),
+        '#description' => $this->t("Your sites main language"),
         '#required' => TRUE
     );
 
     $form['general']['gtranslate_pro'] = array(
         '#type' => 'checkbox',
-        '#title' => t('Sub-directory URL structure'),
+        '#title' => $this->t('Sub-directory URL structure'),
         '#default_value' => $config->get('gtranslate_pro'),
-        '#description' => t('Example: http://example.com/<b>ru</b>/. This feature is available only in paid plans: <a href="https://gtranslate.io/?xyz=1002#pricing" target="_blank">https://gtranslate.io/#pricing</a>'),
+        '#description' => $this->t('Example: http://example.com/<b>ru</b>/. This feature is available only in paid plans: <a href="https://gtranslate.io/?xyz=1002#pricing" target="_blank">https://gtranslate.io/#pricing</a>'),
     );
 
     $form['general']['gtranslate_enterprise'] = array(
         '#type' => 'checkbox',
-        '#title' => t('Sub-domain URL structure'),
+        '#title' => $this->t('Sub-domain URL structure'),
         '#default_value' => $config->get('gtranslate_enterprise'),
-        '#description' => t('Example: http://<b>es.</b>example.com/. This feature is available only in paid plans: <a href="https://gtranslate.io/?xyz=1002#pricing" target="_blank">https://gtranslate.io/#pricing</a>'),
+        '#description' => $this->t('Example: http://<b>es.</b>example.com/. This feature is available only in paid plans: <a href="https://gtranslate.io/?xyz=1002#pricing" target="_blank">https://gtranslate.io/#pricing</a>'),
     );
 
     $form['general']['gtranslate_flag_size'] = array(
         '#type' => 'radios',
-        '#title' => t('Flag Size'),
+        '#title' => $this->t('Flag Size'),
         '#default_value' => $config->get('gtranslate_flag_size'),
         '#options' => array(16 => '16px', 24 => '24px', 32 => '32px'),
-        '#description' => t("Select the flag size"),
+        '#description' => $this->t("Select the flag size"),
         '#required' => TRUE
     );
 
     $form['general']['gtranslate_new_window'] = array(
         '#type' => 'checkbox',
-        '#title' => t('Open translated page in a new window'),
+        '#title' => $this->t('Open translated page in a new window'),
         '#default_value' => $config->get('gtranslate_new_window'),
-        '#description' => t("The translated page will appear in a new window"),
+        '#description' => $this->t("The translated page will appear in a new window"),
     );
 
     $form['general']['gtranslate_analytics'] = array(
         '#type' => 'checkbox',
-        '#title' => t('Analytics'),
+        '#title' => $this->t('Analytics'),
         '#default_value' => $config->get('gtranslate_analytics'),
-        '#description' => t("If you have Google Analytics _gaq code on your site you can enable this which will allow you to see translation events in Google Analytics -&gt; Content -&gt; Event Tracking."),
+        '#description' => $this->t("If you have Google Analytics _gaq code on your site you can enable this which will allow you to see translation events in Google Analytics -&gt; Content -&gt; Event Tracking."),
     );
 
     $form['language'] = array(
@@ -104,14 +104,13 @@ class GTranslateSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Language Configuration'),
     );
 
-    $languages_flags = array('en', 'fr', 'de', 'it', 'pt', 'ru', 'es');
     foreach($this->languages as $lang => $language)
         $form['language']["gtranslate_$lang"] = array(
             '#type' => 'radios',
-            '#title' => t("Show $language"),
+            '#title' => $this->t("Show $language"),
             '#default_value' =>  $config->get('gtranslate_'.$lang, 0) ,
             '#options' => array(1=>'Yes', 0=>'No', 2=>'As a flag'),
-            '#description' => t("Show $language in the language list"),
+            '#description' => $this->t("Show $language in the language list"),
             '#required' => TRUE
         );
 
@@ -131,17 +130,17 @@ class GTranslateSettingsForm extends ConfigFormBase {
      $form_value = $form_state->getValues();
 
     $this->config('gtranslate.settings')
-	  ->set('gtranslate_pro', $form_value['gtranslate_pro'])
-	  ->set('gtranslate_enterprise', $form_value['gtranslate_enterprise'])
-	  ->set('gtranslate_analytics', $form_value['gtranslate_analytics'])
-	  ->set('gtranslate_look', $form_value['gtranslate_look'])
-	  ->set('gtranslate_flag_size', $form_value['gtranslate_flag_size'])
-	  ->set('gtranslate_new_window', $form_value['gtranslate_new_window'])
-	  ->set('gtranslate_main_lang', $form_value['gtranslate_main_lang'])
-	  ->save();
+      ->set('gtranslate_pro', $form_value['gtranslate_pro'])
+      ->set('gtranslate_enterprise', $form_value['gtranslate_enterprise'])
+      ->set('gtranslate_analytics', $form_value['gtranslate_analytics'])
+      ->set('gtranslate_look', $form_value['gtranslate_look'])
+      ->set('gtranslate_flag_size', $form_value['gtranslate_flag_size'])
+      ->set('gtranslate_new_window', $form_value['gtranslate_new_window'])
+      ->set('gtranslate_main_lang', $form_value['gtranslate_main_lang'])
+      ->save();
 
-	foreach($this->languages as $lang => $language)
-		$this->config('gtranslate.settings')->set('gtranslate_'.$lang, $form_value['gtranslate_'.$lang])->save();
+    foreach($this->languages as $lang => $language)
+        $this->config('gtranslate.settings')->set('gtranslate_'.$lang, $form_value['gtranslate_'.$lang])->save();
 
     parent::submitForm($form, $form_state);
   }
