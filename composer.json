@@ -1,0 +1,7 @@
+{
+    "name": "drupal/gtranslate",
+    "type": "drupal-module",
+    "description": "gtranslate module for Drupal.",
+    "homepage": "http://drupal.org/project/disqus",
+    "license": "GPL-2.0-or-later"
+}
